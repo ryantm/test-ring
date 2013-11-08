@@ -1,6 +1,12 @@
 (ns test-ring.core
-  (:require [ring.adapter.jetty :as jetty])
+  (:require [ring.adapter.jetty :as jetty]
+            [ring.util.codec :as codec])
 )
+
+(defn wrap-uri-decode [handler]
+  (fn [request]
+    (handler (assoc request :uri (codec/url-decode (:uri request))))
+    ))
 
 (defn wrap-printuri [handler]
   (fn [request]
@@ -20,6 +26,6 @@
 
 (defn -main
   []
-  (jetty/run-jetty (wrap-printuri handler) {:port 3001})
+  (jetty/run-jetty (wrap-uri-decode (wrap-printuri handler)) {:port 3001})
 )
 
