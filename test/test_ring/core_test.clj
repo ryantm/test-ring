@@ -2,6 +2,6 @@
   (:require [clojure.test :refer :all]
             [test-ring.core :refer :all]))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(deftest wrap-uri-decode1
+  (testing "wrap-uri-decode decoding an encoded space"
+    (is (= "a b" ((wrap-uri-decode :uri-decoded) {:uri "a%20b"})))))
